@@ -12,7 +12,7 @@ class Value extends Model
 
     protected $fillable = [
         'standard_id',
-        'answer',
+        'user_id',
         'score',
     ];
 

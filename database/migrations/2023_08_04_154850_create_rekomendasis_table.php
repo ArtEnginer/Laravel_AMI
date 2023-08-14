@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('rekomendasis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('standard_id');
+            $table->int('user_id');
             $table->string('value');
             $table->timestamps();
         });

@@ -32,13 +32,14 @@ class DashboardController extends Controller
                 return view('pages.dashboard.admin', $data);
                 break;
             case "auditor":
-                $data['ami'] = AuditPlan::with(['faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2'])
-                    ->where('lead_auditor_id', $userId)
-                    ->orWhere('auditor_1_id', $userId)
-                    ->orWhere('auditor_2_id')
-                    ->get();
+                // $data['ami'] = AuditPlan::with(['faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2'])
+                //     ->where('lead_auditor_id', $userId)
+                //     ->orWhere('auditor_1_id', $userId)
+                //     ->orWhere('auditor_2_id')
+                //     ->get();
 
-                return view('pages.dashboard.auditor', $data);
+                // return view('pages.dashboard.auditor', $data);
+                return redirect()->route('standarpertanyaan.audit');
                 break;
             default:
                 $data['ami'] = AuditPlan::with(['faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2'])

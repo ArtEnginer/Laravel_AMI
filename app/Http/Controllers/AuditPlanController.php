@@ -78,6 +78,19 @@ class AuditPlanController extends Controller
      */
     public function edit(string $id)
     {
+        $item = AuditPlan::findOrFail($id);
+        $faculties = Faculty::all();
+        $study_programs = User::where('role', 'prodi')->get();
+        $auditor = User::where('role', 'auditor')->get();
+        $tahun = Tahun::get();
+
+        return view('pages.ami.edit', [
+            'item' => $item,
+            'faculties' => $faculties,
+            'study_programs' => $study_programs,
+            'auditor' => $auditor,
+            'tahun' => $tahun,
+        ]);
     }
 
     /**
@@ -85,7 +98,19 @@ class AuditPlanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = [
+            'faculty_id' => $request->faculty_id,
+            'study_program_id' => $request->study_program_id,
+            'lead_auditor_id' => $request->lead_auditor_id,
+            'auditor_1_id' => $request->auditor_1_id,
+            'auditor_2_id' => $request->auditor_1_id,
+            'tahun' => $request->tahun
+        ];
+
+        $item = AuditPlan::findOrFail($id);
+        $item->update($data);
+
+        return redirect('ami')->with('toast', 'showToast("Data berhasil diubah")');
     }
 
     /**
