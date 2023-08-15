@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('rekomendasis', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('audit_plan_id');
             $table->foreignId('standard_id');
-            $table->integer('user_id');
+            $table->foreignId('user_id');
             $table->string('value');
             $table->timestamps();
         });

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('pages.auth.login');
@@ -58,30 +58,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('dashboard/upload_foto_kegiatan/{id}', [DashboardController::class, 'upload_foto_kegiatan'])->name('dashboard.upload_foto_kegiatan');
 
         // Standar Pertanyaan
-        Route::get('standarpertanyaanaudit',[AuditController::class,'index'])->name('standarpertanyaan.audit');
-        Route::get('standarpertanyaanaudit/add/nilai/{id}',[AuditController::class,'create_nilai'])->name('standarpertanyaan.nilai');
-        Route::post('standarpertanyaanaudit/add/nilai/{id}',[AuditController::class,'store_nilai'])->name('standarpertanyaan.nilai.store');
-        Route::get('standarpertanyaanaudit/add/rekomendasi/{id}',[AuditController::class,'create_rekomendasi'])->name('standarpertanyaan.rekomendasi');
-        Route::post('standarpertanyaanaudit/add/rekomendasi/{id}',[AuditController::class,'store_rekomendasi'])->name('standarpertanyaan.rekomendasi.store');
+        Route::get('standarpertanyaanaudit', [AuditController::class, 'index'])->name('standarpertanyaan.audit');
+        Route::get('standarpertanyaanaudit/add/nilai/{id}/{sid}', [AuditController::class, 'create_nilai'])->name('standarpertanyaan.nilai');
+        Route::post('standarpertanyaanaudit/add/nilai/{id}/{sid}', [AuditController::class, 'store_nilai'])->name('standarpertanyaan.nilai.store');
+        Route::get('standarpertanyaanaudit/add/rekomendasi/{id}/{sid}', [AuditController::class, 'create_rekomendasi'])->name('standarpertanyaan.rekomendasi');
+        Route::post('standarpertanyaanaudit/add/rekomendasi/{id}/{sid}', [AuditController::class, 'store_rekomendasi'])->name('standarpertanyaan.rekomendasi.store');
         // Laporan
-        Route::get('laporan-audit/ami',[AuditController::class,'laporan_ami'])->name('laporan.audit.ami');
-        Route::get('laporan-audit/ketercapaian',[AuditController::class,'laporan_ketercapaian'])->name('laporan.audit.ketercapaian');
-        Route::get('laporan-audit/temuan-ringan',[AuditController::class,'laporan_temuan_ringan'])->name('laporan.audit.ringan');
-        Route::get('laporan-audit/temuan-berat',[AuditController::class,'laporan_temuan_berat'])->name('laporan.audit.berat');
-        Route::get('laporan-audit/print/{type}',[AuditController::class,'print'])->name('laporan.audit.print');
+        Route::get('laporan-audit/ami', [AuditController::class, 'laporan_ami'])->name('laporan.audit.ami');
+        Route::get('laporan-audit/ketercapaian', [AuditController::class, 'laporan_ketercapaian'])->name('laporan.audit.ketercapaian');
+        Route::get('laporan-audit/temuan-ringan', [AuditController::class, 'laporan_temuan_ringan'])->name('laporan.audit.ringan');
+        Route::get('laporan-audit/temuan-berat', [AuditController::class, 'laporan_temuan_berat'])->name('laporan.audit.berat');
+        Route::get('laporan-audit/print/{type}', [AuditController::class, 'print'])->name('laporan.audit.print');
     });
 
     Route::middleware(['can:prodi'])->group(function () {
         Route::get('dashboard/ubah_status_audit/{id}', [DashboardController::class, 'ubah_status_audit'])->name('dashboard.ubah_status_audit');
-        Route::get('standarpertanyaan',[ProdiController::class,'index'])->name('standarpertanyaan.index');
-        Route::get('standarpertanyaan/add/bukti/{id}',[ProdiController::class,'create_bukti'])->name('standarpertanyaan.bukti');
-        Route::post('standarpertanyaan/add/bukti/{id}',[ProdiController::class,'store_bukti'])->name('standarpertanyaan.bukti.store');
+        Route::get('standarpertanyaan', [ProdiController::class, 'index'])->name('standarpertanyaan.index');
+        Route::get('standarpertanyaan/add/bukti/{id}', [ProdiController::class, 'create_bukti'])->name('standarpertanyaan.bukti');
+        Route::post('standarpertanyaan/add/bukti/{id}', [ProdiController::class, 'store_bukti'])->name('standarpertanyaan.bukti.store');
         // Laporan
-        Route::get('laporan-prodi/ami',[ProdiController::class,'laporan_ami'])->name('laporan.prodi.ami');
-        Route::get('laporan-prodi/ketercapaian',[ProdiController::class,'laporan_ketercapaian'])->name('laporan.prodi.ketercapaian');
-        Route::get('laporan-prodi/temuan-ringan',[ProdiController::class,'laporan_temuan_ringan'])->name('laporan.prodi.ringan');
-        Route::get('laporan-prodi/temuan-berat',[ProdiController::class,'laporan_temuan_berat'])->name('laporan.prodi.berat');
-        Route::get('laporan-prodi/print/{type}',[ProdiController::class,'print'])->name('laporan.prodi.print');
+        Route::get('laporan-prodi/ami', [ProdiController::class, 'laporan_ami'])->name('laporan.prodi.ami');
+        Route::get('laporan-prodi/ketercapaian', [ProdiController::class, 'laporan_ketercapaian'])->name('laporan.prodi.ketercapaian');
+        Route::get('laporan-prodi/temuan-ringan', [ProdiController::class, 'laporan_temuan_ringan'])->name('laporan.prodi.ringan');
+        Route::get('laporan-prodi/temuan-berat', [ProdiController::class, 'laporan_temuan_berat'])->name('laporan.prodi.berat');
+        Route::get('laporan-prodi/print/{type}', [ProdiController::class, 'print'])->name('laporan.prodi.print');
 
     });
 

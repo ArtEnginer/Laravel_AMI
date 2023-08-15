@@ -12,7 +12,7 @@ class Audit extends Model
 
     protected $fillable = [
         'audit_plan_id',
-        'question_id',
+        'standard_id',
         'value_id',
         'auditor_id',
     ];
@@ -22,9 +22,9 @@ class Audit extends Model
         return $this->belongsTo(AuditPlan::class);
     }
 
-    public function question(): BelongsTo
+    public function standard(): BelongsTo
     {
-        return $this->belongsTo(Question::class);
+        return $this->belongsTo(Standard::class);
     }
 
     public function value(): BelongsTo

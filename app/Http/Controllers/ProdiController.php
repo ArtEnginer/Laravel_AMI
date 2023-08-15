@@ -14,10 +14,11 @@ class ProdiController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $tahun = Tahun::get();
         $data = AuditPlan::with('faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2')
             ->where('study_program_id', '=', $user->id)
             ->get();
-        return view('pages.standarpertanyaan.index', compact('data', 'user'));
+        return view('pages.standarpertanyaan.index', compact('data', 'user', 'tahun'));
     }
 
     public function create_bukti($id)

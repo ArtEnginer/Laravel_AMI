@@ -3,7 +3,7 @@
 @section('title', 'Tambah Rekomendasi')
 
 @section('content')
-<form action="{{ route('standarpertanyaan.rekomendasi.store',$id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ url()->current() }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col-md-8">

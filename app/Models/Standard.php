@@ -20,10 +20,15 @@ class Standard extends Model
     {
         return $this->hasMany(Question::class, 'standard_id', 'id');
     }
-    
+
     public function bukti(): HasMany
     {
         return $this->hasMany(Bukti::class, 'standard_id', 'id');
+    }
+
+    public function audit(): HasMany
+    {
+        return $this->hasMany(Audit::class, 'standard_id', 'id');
     }
 
     public function score(): HasMany

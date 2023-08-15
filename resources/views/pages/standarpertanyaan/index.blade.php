@@ -36,6 +36,23 @@
             </tr>
         </table>
         <br>
+        <div id="main-box">
+            <div class="row">
+                <div class="col">
+                    {{-- <a class="btn btn-primary mb-3" href="{{ route('laporan.print','ALL') }}">Cetak</a> --}}
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <div class="text-right">
+                        <select class="form-control selected-filters" style="display: inline !important;" name="selected_year" id="selected_year">
+                            <option value="none" selected>Semua Tahun</option>
+                            @foreach ($tahun as $item)
+                            <option value="{{ $item->value }}" >{{ $item->value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <br>
         <div class="table-responsive">
             <table class="table w-100" id="datatable">
                 <thead>
@@ -86,6 +103,7 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
         </div>
     </div>
 </div>

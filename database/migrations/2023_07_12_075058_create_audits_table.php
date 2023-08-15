@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('audits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('audit_plan_id');
-            $table->foreignId('question_id');
+            $table->foreignId('standard_id');
             $table->foreignId('value_id');
             $table->foreignId('auditor_id');
             $table->timestamps();
