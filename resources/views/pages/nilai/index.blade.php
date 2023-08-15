@@ -19,6 +19,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Standar</th>
                             <th>Nilai</th>
                             <th>Aksi</th>
                         </tr>
@@ -52,6 +53,10 @@
                         name: 'id'
                     },
                     {
+                        data: 'standard.name',
+                        name: 'standard.name'
+                    },
+                    {
                         data: 'score',
                         name: 'score'
                     },
@@ -74,20 +79,18 @@
                         <form action="{{ url('/nilai') }}/${row.id}" method="POST">
                             @method('DELETE')
                             @csrf
-                            <div class="d-flex">
-                                <a
-                                    href="{{ url('/nilai') }}/${row.id}/edit"
-                                    class="btn btn-sm btn-warning"
-                                >
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <button
-                                    type="submit"
-                                    class="btn-danger btn-delete btn btn-sm"
-                                >
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
+                            <a
+                                href="{{ url('/nilai') }}/${row.id}/edit"
+                                class="btn btn-sm btn-warning"
+                            >
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button
+                                type="submit"
+                                class="btn-danger btn-delete btn btn-sm"
+                            >
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </form>
                     `;
                     }

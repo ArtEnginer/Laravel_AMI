@@ -29,7 +29,7 @@ class ValueController extends Controller
     {
         $standards = Standard::all();
         return view('pages.nilai.create', [
-            'standards' => $standards
+            'standards' => $standards,
         ]);
     }
 
@@ -40,7 +40,6 @@ class ValueController extends Controller
     {
         $data = $request->validate([
             'standard_id' => 'required|exists:standards,id',
-            'answer' => 'required',
             'score' => 'required',
         ]);
 
@@ -80,7 +79,6 @@ class ValueController extends Controller
 
         $data = $request->validate([
             'standard_id' => 'required|exists:standards,id',
-            'answer' => 'required',
             'score' => 'required',
         ]);
 

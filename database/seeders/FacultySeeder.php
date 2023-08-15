@@ -13,20 +13,26 @@ class FacultySeeder extends Seeder
     public function run(): void
     {
         Faculty::create([
-            'name' => 'Fakultas 01',
-            'dekan' => 'Dekan 01',
-            'nidn'  => '010000000001',
+            'name' => 'Sains dan Teknologi',
+            'dekan' => 'Dekan FST',
+            'nidn' => '010000000001',
             'telp' => '082028192301',
         ]);
         Faculty::create([
-            'name' => 'Fakultas 02',
-            'dekan' => 'Dekan 02',
+            'name' => 'Ekonomi dan Bisnis',
+            'dekan' => 'Dekan FEB',
             'nidn' => '010000000002',
             'telp' => '082028192302',
         ]);
         Faculty::create([
-            'name' => 'Fakultas 03',
-            'dekan' => 'Dekan 03',
+            'name' => 'Keguruan dan Ilmu Pendidikan',
+            'dekan' => 'Dekan FKIP',
+            'nidn' => '010000000003',
+            'telp' => '082028192303',
+        ]);
+        Faculty::create([
+            'name' => 'Ilmu Sosial dan Ilmu Politik',
+            'dekan' => 'Dekan FISIP',
             'nidn' => '010000000003',
             'telp' => '082028192303',
         ]);

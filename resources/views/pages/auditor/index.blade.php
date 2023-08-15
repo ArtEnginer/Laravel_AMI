@@ -19,10 +19,10 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Name</th>
                             <th>Prodi</th>
                             <th>Fakultas</th>
                             <th>NIDN</th>
-                            <th>Name</th>
                             <th>Email</th>
                             <th>Aksi</th>
                         </tr>
@@ -56,6 +56,10 @@
                         name: 'id'
                     },
                     {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
                         data: 'study_program.name',
                         name: 'study_program.name'
                     },
@@ -66,10 +70,6 @@
                     {
                         data: 'nidn',
                         name: 'nidn'
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
                     },
                     {
                         data: 'email',

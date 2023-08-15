@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('values', function (Blueprint $table) {
             $table->id();
             $table->foreignId('standard_id');
-            $table->int('user_id');
             $table->enum('score', ['0', '1', '2', '3', '4']);
             $table->timestamps();
         });

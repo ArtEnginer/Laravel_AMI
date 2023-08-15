@@ -22,27 +22,17 @@
             <tr>
                 <td>Prodi</td>
                 <td>:</td>
-                <td>&nbsp;Sistem Informasi</td>
+                <td>&nbsp;{{ $user->name }}</td>
             </tr>
             <tr>
                 <td>Fakultas</td>
                 <td>:</td>
-                <td>&nbsp;Sains dan Teknologi</td>
+                <td>&nbsp;{{ $user->faculty->name }}</td>
             </tr>
             <tr>
-                <td>Ketua Auditor</td>
+                <td>NIDN</td>
                 <td>:</td>
-                <td>&nbsp;M. Wildan Ihsani</td>
-            </tr>
-            <tr>
-                <td>Anggota Auditor</td>
-                <td>:</td>
-                <td>&nbsp;Tsalatsah Maulidi Hasanah</td>
-            </tr>
-            <tr>
-                <td>Tahun</td>
-                <td>:</td>
-                <td>&nbsp;2023</td>
+                <td>&nbsp;{{ $user->nidn }}</td>
             </tr>
         </table>
         <br>
@@ -51,18 +41,21 @@
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Standar</th>
-                        <th>Pertanyaan</th>
-                        <th>Bukti</th>
-                        <th>Nilai</th>
-                        <th>Rekomendasi</th>
+                        <th>Tahun</th>
+                        <th>Ketua Auditor</th>
+                        <th>Anggota Auditor</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($data as $key => $item)
                     <tr>
                         <td>{{ $key+1 }}</td>
-                        <td>{!! $item->value !!}</td>
+                        <td>{{ $item->tahun }}</td>
+                        <td>{{ $item->lead_auditor->name }}</td>
+                        <td>{{ $item->auditor_2->name }}</td>
+                        <td><button type="button" class="btn btn-success btn-sm">Audit</button></td>
+                        {{-- <td>{!! $item->value !!}</td>
                         <td>
                             @foreach($item->pertanyaan as $pertanyaan)
                             {!! $pertanyaan->questionText !!}
@@ -88,7 +81,7 @@
                             @foreach($item->rekomendasi as $rekomendasi)
                             {{ $rekomendasi->value }}<br />
                             @endforeach
-                        </td>
+                        </td> --}}
                     </tr>
                     @endforeach
                 </tbody>

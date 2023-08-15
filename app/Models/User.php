@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+//
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -60,5 +58,15 @@ class User extends Authenticatable
     public function study_program(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getRedirectRoute()
+    {
+        return match ($this->role) {
+            "admin" => 'dashboard',
+            "prodi" => 'standarpertanyaan',
+            "auditor" => 'standarpertanyaanaudit',
+            // ...
+        };
     }
 }

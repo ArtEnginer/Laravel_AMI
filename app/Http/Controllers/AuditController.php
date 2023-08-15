@@ -2,24 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Standard;
-use App\Models\Question;
-use App\Models\Value;
+use App\Models\AuditPlan;
 use App\Models\Rekomendasi;
+use App\Models\Standard;
 use App\Models\Tahun;
+use App\Models\Value;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuditController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        $tahun = Tahun::get();
         $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
             ->get();
+        $plans = AuditPlan::with('faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2')
+            ->where('lead_auditor_id', '=', Auth::id())
+            ->orWhere('auditor_2_id', '=', Auth::id())
+            ->get();
 
-        $countNilai = Value::where('user_id', auth()->user()->id)->count();
         $countRekomendasi = Rekomendasi::where('user_id', auth()->user()->id)->count();
 
-        return view('pages.standarpertanyaanaudit.index', compact('data', 'countNilai', 'countRekomendasi'));
+        return view('pages.standarpertanyaanaudit.index', compact('data', 'tahun', 'user', 'plans', 'countRekomendasi'));
     }
 
     public function create_nilai($id)
@@ -123,8 +129,7 @@ class AuditController extends Controller
         return view('pages.laporan-audit.laporan_berat', compact('data', 'tahun'));
     }
 
-    public function print(Request $request, $type)
-    {
+    public function print(Request $request, $type) {
         $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
             ->get();
 

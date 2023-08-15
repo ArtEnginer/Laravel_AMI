@@ -14,6 +14,7 @@ class Audit extends Model
         'audit_plan_id',
         'question_id',
         'value_id',
+        'auditor_id',
     ];
 
     public function audit_plan(): BelongsTo
@@ -29,5 +30,10 @@ class Audit extends Model
     public function value(): BelongsTo
     {
         return $this->belongsTo(Value::class);
+    }
+
+    public function auditor(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

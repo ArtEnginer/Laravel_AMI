@@ -34,28 +34,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="answer" class="col-sm-3 col-form-label">Jawaban</label>
+                            <label for="value" class="col-sm-3 col-form-label">Nilai</label>
                             <div class="col-sm-9">
-                                <textarea style="height: 200px" class="form-control summernote-simple @error('answer') is-invalid @enderror"
-                                    name="answer" id="answer" placeholder="Jawaban">{{ old('answer', $item->answer) }}</textarea>
-                                @error('answer')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="score" class="col-sm-3 col-form-label">Nilai</label>
-                            <div class="col-sm-9">
-                                <select class="form-control @error('score') is-invalid @enderror" name="score"
-                                    id="score">
-                                    @for ($i = 0; $i < 5; $i++)
-                                        <option {{ $i == $item->score ? 'selected' : '' }} value="{{ $i }}">
-                                            {{ $i }}</option>
-                                    @endfor
-                                </select>
-                                @error('score')
+                                <input type="number" placeholder="Input Nilai" value="{{ $item->score }}" class="form-control @error('value') is-invalid @enderror" name="value" min="1" max="10" />
+                                @error('value')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>

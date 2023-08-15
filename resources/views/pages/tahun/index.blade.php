@@ -74,7 +74,6 @@
                         <form action="{{ url('/tahun') }}/${row.id}" method="POST">
                             @method('DELETE')
                             @csrf
-                            <div class="d-flex">
                                 <a
                                     href="{{ url('/tahun') }}/${row.id}/edit"
                                     class="btn btn-sm btn-warning"
@@ -87,7 +86,6 @@
                                 >
                                     <i class="fas fa-trash"></i>
                                 </button>
-                            </div>
                         </form>
                     `;
                     }

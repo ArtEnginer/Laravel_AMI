@@ -31,7 +31,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'string',
                 'max:32',
                 'min:3',
-                Rule::unique('users')->ignore($user->id)
+                Rule::unique('users')->ignore($user->id),
             ],
         ])->validateWithBag('updateProfileInformation');
 
