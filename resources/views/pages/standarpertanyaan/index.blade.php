@@ -108,3 +108,35 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $('.selected-filters').on("change", function () {
+            $.ajax({
+                type: "GET",
+                url: "{!! url()->current() !!}",
+                dataType: 'JSON',
+                data: {
+                    action: "plans",
+                    year: $("#selected_year").val()
+                },
+                success: function (response) {
+                    createPlans(response);
+                }
+            });
+        });
+
+        function createPlans(data = []) {
+            $("#main-box tbody").empty();
+            data.forEach(function(item, index, arr){
+                $("#main-box tbody").append(`<tr>
+                                <td>${index + 1}</td>
+                                <td>${item.tahun}</td>
+                                <td>${item.lead_auditor.name}</td>
+                                <td>${item.auditor_2.name}</td>
+                                <td><button type="button" class="btn btn-success btn-sm btn-audit" data-planId="${item.id}">Audit</button></td>
+                            </tr>`);
+            })
+        }
+    </script>
+@endpush()

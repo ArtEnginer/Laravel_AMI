@@ -11,9 +11,18 @@ use Illuminate\Support\Facades\Auth;
 
 class ProdiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        if ($request->ajax()) {
+            if ($request->query('action') == "plans") {
+                $q = AuditPlan::with('faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2')
+                    ->where('study_program_id', '=', $user->id);
+                $q = $request->query('year') == "none" ? $q : $q->where('tahun', '=', $request->query('year'));
+                return json_encode($q->get());
+            }
+            return json_encode([]);
+        }
         $tahun = Tahun::get();
         $data = AuditPlan::with('faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2')
             ->where('study_program_id', '=', $user->id)
