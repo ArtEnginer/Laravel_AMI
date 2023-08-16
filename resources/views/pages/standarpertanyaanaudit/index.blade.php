@@ -165,7 +165,7 @@
                             q += `<div>${qs.questionText}</div>`;
                         });
                         const b = item.bukti != null ? `<a href="${item.bukti?.value}">Bukti</a>` : "Belum";
-                        const n = item.nilai != null ? item.nilai?.value.score : `
+                        const n = item.nilai != null ? item.nilai?.value : `
                             <a href="${nilauUrl.replace("99999",planId).replace("55555", item.id)}" class="btn btn-success btn-sm">Tambah Nilai</a>
                         `;
                         const r = item.rekomendasi != null ? item.rekomendasi?.value : `

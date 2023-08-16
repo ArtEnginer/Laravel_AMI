@@ -148,7 +148,7 @@
                         const b = item.bukti != null ? `<a href="${item.bukti?.value}">Bukti</a>` : `
                         <a href="${buktiUrl.replace("99999",planId).replace("55555", item.id)}" class="btn btn-success btn-sm">Tambah Bukti</a>
                         `;
-                        const n = item.nilai != null ? item.nilai?.value.score : `
+                        const n = item.nilai != null ? item.nilai?.value : `
                             Belum
                         `;
                         const r = item.rekomendasi != null ? item.rekomendasi?.value : `

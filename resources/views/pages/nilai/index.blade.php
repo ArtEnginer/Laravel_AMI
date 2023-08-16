@@ -76,6 +76,7 @@
                     "targets": -1,
                     "render": function(data, type, row, meta) {
                         return `
+                        <div style="min-width: 4rem;">
                         <form action="{{ url('/nilai') }}/${row.id}" method="POST">
                             @method('DELETE')
                             @csrf
@@ -92,6 +93,7 @@
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
+                        </div>
                     `;
                     }
                 }],

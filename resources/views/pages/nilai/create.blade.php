@@ -34,7 +34,11 @@
                         <div class="form-group row">
                             <label for="value" class="col-sm-3 col-form-label">Nilai</label>
                             <div class="col-sm-9">
-                                <input type="number" placeholder="Input Nilai" class="form-control @error('value') is-invalid @enderror" name="value" min="1" max="10" />
+                                <select class="form-control @error('value') is-invalid @enderror" name="value">
+                                    @for ($i = 0; $i <= 4; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                    @endfor
+                                </select>
                                 @error('value')
                                     <div class="invalid-feedback">
                                         {{ $message }}

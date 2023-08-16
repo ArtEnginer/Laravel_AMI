@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('audit_plan_id');
             $table->foreignId('standard_id');
-            $table->foreignId('value_id');
+            $table->integer('value');
             $table->foreignId('auditor_id');
             $table->timestamps();
         });

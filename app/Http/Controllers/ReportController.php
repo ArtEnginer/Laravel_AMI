@@ -2,102 +2,94 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Audit;
 use App\Models\AuditPlan;
-use App\Models\Standard;
-use App\Models\Tahun;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    private function _score($id, $score)
-    {
-        return Audit::join('audit_plans', 'audit_plans.id', '=', 'audits.audit_plan_id')
-            ->join('values', 'values.id', '=', 'audits.value_id')
-            ->where('study_program_id', $id)
-            ->where('score', $score)
-            ->count();
-    }
-
     public function index(Request $request)
     {
-        $tahun = Tahun::get();
-        $selectedYear = $request->year;
-        if ($selectedYear != null) {
-            $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
-                ->whereYear('created_at', $selectedYear)
-                ->get();
-        } else {
-            $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
-                ->get();
-        };
+        $prodi = User::where('role', 'prodi')->get()->toArray();
+        array_walk($prodi, function (&$p, $id) {
+            $plans = AuditPlan::with('audits')->where("study_program_id", '=', $p['id'])->get()->toArray();
+            foreach ($plans as $v) {
+                foreach ($v['audits'] as $s) {
+                    if ($s['value'] == 0) {
+                        $p['skor0'][] = $s;
+                    }
+                    if ($s['value'] == 1) {
+                        $p['skor1'][] = $s;
+                    }
+                    if ($s['value'] == 2) {
+                        $p['skor2'][] = $s;
+                    }
+                    if ($s['value'] == 3) {
+                        $p['skor3'][] = $s;
+                    }
+                    if ($s['value'] == 4) {
+                        $p['skor4'][] = $s;
+                    }
+                }
+            }
+            $p['skor0'] = isset($p['skor0']) ? $p['skor0'] : [];
+            $p['skor1'] = isset($p['skor1']) ? $p['skor1'] : [];
+            $p['skor2'] = isset($p['skor2']) ? $p['skor2'] : [];
+            $p['skor3'] = isset($p['skor3']) ? $p['skor3'] : [];
+            $p['skor4'] = isset($p['skor4']) ? $p['skor4'] : [];
+        });
+        return view('pages.laporan.index', compact('prodi'));
+    }
 
-        return view('pages.laporan.index', compact('data', 'tahun'));
+    public function ketercapaian()
+    {
+        $prodi = User::where('role', 'prodi')->get()->toArray();
+        array_walk($prodi, function (&$p, $id) {
+            $plans = AuditPlan::with('audits')->where("study_program_id", '=', $p['id'])->get()->toArray();
+            foreach ($plans as $v) {
+                foreach ($v['audits'] as $s) {
+                    if ($s['value'] == 4) {
+                        $p['skor'][] = $s;
+                    }
+                }
+            }
+            $p['skor'] = isset($p['skor']) ? $p['skor'] : [];
+        });
+        return view('pages.laporan.ketercapaian', compact('prodi'));
     }
 
     public function temuan_ringan()
     {
-        $prodi = User::where('role', 'prodi')->get();
-
-        $result = [];
-        foreach ($prodi as $p) {
-            $score_4 = $this->_score($p->id, '4');
-            $score_3 = $this->_score($p->id, '3');
-            $score_2 = $this->_score($p->id, '2');
-            $score_1 = $this->_score($p->id, '1');
-            $score_0 = $this->_score($p->id, '0');
-            $total_score = (($score_0 * 0) + ($score_1 * 20) + ($score_2 * 30) + ($score_3 * 40) + ($score_4 * 50));
-
-            if ($total_score >= 41 && $total_score <= 60) {
-                $result[] = [
-                    'study_program_id' => $p->id,
-                    'name' => $p->name,
-                    'score_4' => $score_4,
-                    'score_3' => $score_3,
-                    'score_2' => $score_2,
-                    'score_1' => $score_1,
-                    'score_0' => $score_0,
-                    'total_score' => $total_score,
-                ];
+        $prodi = User::where('role', 'prodi')->get()->toArray();
+        array_walk($prodi, function (&$p, $id) {
+            $plans = AuditPlan::with('audits')->where("study_program_id", '=', $p['id'])->get()->toArray();
+            foreach ($plans as $v) {
+                foreach ($v['audits'] as $s) {
+                    if ($s['value'] == 2 || $s['value'] == 3) {
+                        $p['skor'][] = $s;
+                    }
+                }
             }
-        }
-
-        return view('pages.laporan.temuan_ringan', [
-            'result' => $result,
-        ]);
+            $p['skor'] = isset($p['skor']) ? $p['skor'] : [];
+        });
+        return view('pages.laporan.temuan_ringan', compact('prodi'));
     }
 
     public function temuan_berat()
     {
-        $prodi = User::where('role', 'prodi')->get();
-
-        $result = [];
-        foreach ($prodi as $p) {
-            $score_4 = $this->_score($p->id, '4');
-            $score_3 = $this->_score($p->id, '3');
-            $score_2 = $this->_score($p->id, '2');
-            $score_1 = $this->_score($p->id, '1');
-            $score_0 = $this->_score($p->id, '0');
-            $total_score = (($score_0 * 0) + ($score_1 * 20) + ($score_2 * 30) + ($score_3 * 40) + ($score_4 * 50));
-
-            if ($total_score <= 40) {
-                $result[] = [
-                    'study_program_id' => $p->id,
-                    'name' => $p->name,
-                    'score_4' => $score_4,
-                    'score_3' => $score_3,
-                    'score_2' => $score_2,
-                    'score_1' => $score_1,
-                    'score_0' => $score_0,
-                    'total_score' => $total_score,
-                ];
+        $prodi = User::where('role', 'prodi')->get()->toArray();
+        array_walk($prodi, function (&$p, $id) {
+            $plans = AuditPlan::with('audits')->where("study_program_id", '=', $p['id'])->get()->toArray();
+            foreach ($plans as $v) {
+                foreach ($v['audits'] as $s) {
+                    if ($s['value'] == 0 || $s['value'] == 1) {
+                        $p['skor'][] = $s;
+                    }
+                }
             }
-        }
-
-        return view('pages.laporan.temuan_berat', [
-            'result' => $result,
-        ]);
+            $p['skor'] = isset($p['skor']) ? $p['skor'] : [];
+        });
+        return view('pages.laporan.temuan_berat', compact('prodi'));
     }
 
     public function print($id) {

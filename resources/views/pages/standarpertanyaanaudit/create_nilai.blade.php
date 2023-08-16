@@ -20,11 +20,10 @@
                     <div class="form-group row">
                         <label for="score" class="col-sm-3 col-form-label">Nilai</label>
                         <div class="col-sm-9">
-                            <select class="form-control @error('score') is-invalid @enderror" name="score" id="score">
-                                <option value="0">0</option>
-                                @foreach ($nilai as $n)
-                                <option value="{{ $n->id }}">{{ $n->score }}</option>
-                                @endforeach
+                            <select class="form-control @error('value') is-invalid @enderror" name="score">
+                                @for ($i = 0; $i <= 4; $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
                             </select>
                             @error('score')
                             <div class="invalid-feedback">

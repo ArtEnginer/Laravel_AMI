@@ -20,7 +20,7 @@
                                     <option value="">-- Pilih Standar --</option>
                                     @foreach ($standards as $standard)
                                         <option value="{{ $standard->id }}">
-                                            {{ $standard->name }} {{ $standard->desc }}
+                                            {!! $standard->value !!}
                                         </option>
                                     @endforeach
                                 </select>

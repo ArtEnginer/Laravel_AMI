@@ -28,8 +28,7 @@ class ProdiController extends Controller
                     ->get()->toArray();
                 array_walk($standards, function (&$value, $key, $request) {
                     $value['bukti'] = Bukti::where('audit_plan_id', '=', 1)->where('standard_id', '=', $value['id'])->first();
-                    $value['nilai'] = Audit::with('value')
-                        ->where('audit_plan_id', '=', $request->query('plan_id'))
+                    $value['nilai'] = Audit::where('audit_plan_id', '=', $request->query('plan_id'))
                         ->where('standard_id', '=', $value['id'])->first();
                     $value['rekomendasi'] = Rekomendasi::where('audit_plan_id', '=', $request->query('plan_id'))
                         ->where('standard_id', '=', $value['id'])->first();

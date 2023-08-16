@@ -29,8 +29,7 @@ class AuditController extends Controller
                     ->get()->toArray();
                 array_walk($standards, function (&$value, $key, $request) {
                     $value['bukti'] = Bukti::where('audit_plan_id', '=', 1)->where('standard_id', '=', $value['id'])->first();
-                    $value['nilai'] = Audit::with('value')
-                        ->where('auditor_id', '=', Auth::id())
+                    $value['nilai'] = Audit::where('auditor_id', '=', Auth::id())
                         ->where('audit_plan_id', '=', $request->query('plan_id'))
                         ->where('standard_id', '=', $value['id'])->first();
                     $value['rekomendasi'] = Rekomendasi::where('user_id', '=', Auth::id())
@@ -69,7 +68,7 @@ class AuditController extends Controller
         $value = new Audit();
         $value->audit_plan_id = $id;
         $value->standard_id = $sid;
-        $value->value_id = $request->score;
+        $value->value = $request->score;
         $value->auditor_id = auth()->user()->id;
         // Tambahkan kolom lain yang sesuai
         $value->save();
@@ -172,8 +171,7 @@ class AuditController extends Controller
         return view('pages.laporan-audit.laporan_berat', compact('data', 'tahun', 'user', 'auditorIdentity'));
     }
 
-    public function print(Request $request, $type)
-    {
+    public function print(Request $request, $type) {
         $user = Auth::user();
         $auditorId = Auth::id();
         $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->get();

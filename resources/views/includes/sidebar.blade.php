@@ -71,6 +71,9 @@
                 <li class="{{ Route::currentRouteName() == 'laporan.hasil_ami' ? 'active' : '' }}">
                     <a href="{{ route('laporan.hasil_ami') }}">Hasil AMI</a>
                 </li>
+                <li class="{{ Route::currentRouteName() == 'laporan.ketercapaian' ? 'active' : '' }}">
+                    <a href="{{ route('laporan.ketercapaian') }}">Ketercapaian</a>
+                </li>
                 <li class="{{ Route::currentRouteName() == 'laporan.temuan_berat' ? 'active' : '' }}">
                     <a href="{{ route('laporan.temuan_berat') }}">Temuan Berat</a>
                 </li>

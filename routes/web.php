@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Laporan
         Route::get('laporan/hasil_ami', [ReportController::class, 'index'])->name('laporan.hasil_ami');
+        Route::get('laporan/ketercapaian', [ReportController::class, 'ketercapaian'])->name('laporan.ketercapaian');
         Route::get('laporan/temuan_ringan', [ReportController::class, 'temuan_ringan'])->name('laporan.temuan_ringan');
         Route::get('laporan/temuan_berat', [ReportController::class, 'temuan_berat'])->name('laporan.temuan_berat');
     });

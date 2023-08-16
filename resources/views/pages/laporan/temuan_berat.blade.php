@@ -15,11 +15,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($result as $item)
+                        @foreach ($prodi as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item['name'] }}</td>
-                                <td>{{ $item['total_score'] }}</td>
+                                <td>{{ count($item['skor']) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
