@@ -22,27 +22,43 @@
             <tr>
                 <td>Prodi</td>
                 <td>:</td>
-                <td>&nbsp;Sistem Informasi</td>
+                <td>
+                    {{ $user->study_program->name}}
+                </td>
             </tr>
             <tr>
                 <td>Fakultas</td>
                 <td>:</td>
-                <td>&nbsp;Sains dan Teknologi</td>
+                <td>
+                    {{ $user->faculty->name}}
+                </td>
             </tr>
             <tr>
                 <td>Ketua Auditor</td>
                 <td>:</td>
-                <td>&nbsp;M. Wildan Ihsani</td>
+                <td>
+                    @foreach ($auditorIdentity as $ui)
+                    {{ $ui->audit_plan->lead_auditor->name}}
+                    @endforeach
+                </td>
             </tr>
             <tr>
                 <td>Anggota Auditor</td>
                 <td>:</td>
-                <td>&nbsp;Tsalatsah Maulidi Hasanah</td>
+                <td>
+                    @foreach ($auditorIdentity as $ui)
+                    {{ $ui->audit_plan->auditor_1->name}}
+                    @endforeach
+                </td>
             </tr>
             <tr>
                 <td>Tahun</td>
                 <td>:</td>
-                <td>&nbsp;2023</td>
+                <td>
+                    @foreach ($auditorIdentity as $ui)
+                    {{ $ui->audit_plan->tahun}}
+                    @endforeach
+                </td>
             </tr>
         </table>
         <br>

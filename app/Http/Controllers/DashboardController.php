@@ -42,11 +42,13 @@ class DashboardController extends Controller
                 return redirect()->route('standarpertanyaan.audit');
                 break;
             default:
-                $data['ami'] = AuditPlan::with(['faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2'])
-                    ->where('study_program_id', $userId)
-                    ->get();
+                // $data['ami'] = AuditPlan::with(['faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2'])
+                //     ->where('study_program_id', $userId)
+                //     ->get();
 
-                return view('pages.dashboard.prodi', $data);
+                // return view('pages.dashboard.prodi', $data);
+
+                return redirect()->route('standarpertanyaanaudit.audit');
                 break;
         }
     }
