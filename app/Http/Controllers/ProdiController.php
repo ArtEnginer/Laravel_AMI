@@ -62,7 +62,6 @@ class ProdiController extends Controller
         $bukti->save();
 
         return redirect()->route('standarpertanyaan.index')->with('message', 'Bukti berhasil ditambahkan.');
-
     }
 
     public function laporan_ami(Request $request)
@@ -77,7 +76,9 @@ class ProdiController extends Controller
             $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
                 ->get();
         };
-        return view('pages.laporan-prodi.laporan_ami', compact('data', 'tahun'));
+        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
+
+        return view('pages.laporan-prodi.laporan_ami', compact('data', 'tahun', 'identity'));
     }
 
     public function laporan_ketercapaian(Request $request)
@@ -92,8 +93,9 @@ class ProdiController extends Controller
             $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
                 ->get();
         };
+        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
 
-        return view('pages.laporan-prodi.laporan_ketercapaian', compact('data', 'tahun'));
+        return view('pages.laporan-prodi.laporan_ketercapaian', compact('data', 'tahun', 'identity'));
     }
 
     public function laporan_temuan_ringan(Request $request)
@@ -108,8 +110,9 @@ class ProdiController extends Controller
             $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
                 ->get();
         };
+        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
 
-        return view('pages.laporan-prodi.laporan_ringan', compact('data', 'tahun'));
+        return view('pages.laporan-prodi.laporan_ringan', compact('data', 'tahun', 'identity'));
     }
 
     public function laporan_temuan_berat(Request $request)
@@ -124,14 +127,16 @@ class ProdiController extends Controller
             $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
                 ->get();
         };
-
-        return view('pages.laporan-prodi.laporan_berat', compact('data', 'tahun'));
+        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
+        return view('pages.laporan-prodi.laporan_berat', compact('data', 'tahun', 'identity'));
     }
 
-    public function print(Request $request, $type) {
+    public function print(Request $request, $type)
+    {
         $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
             ->get();
+        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
 
-        return view('pages.laporan-prodi.print', compact('data', 'type'));
+        return view('pages.laporan-prodi.print', compact('data', 'type', 'identity'));
     }
 }

@@ -99,7 +99,8 @@ class AuditController extends Controller
     public function laporan_ami(Request $request)
     {
         $auditorId = Auth::id();
-        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->get();
+        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->first();
+
         $user = Auth::user();
         $tahun = Tahun::get();
         $selectedYear = $request->year;
@@ -117,7 +118,7 @@ class AuditController extends Controller
     public function laporan_ketercapaian(Request $request)
     {
         $auditorId = Auth::id();
-        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->get();
+        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->first();
         $user = Auth::user();
         $tahun = Tahun::get();
         $selectedYear = $request->year;
@@ -136,7 +137,7 @@ class AuditController extends Controller
     public function laporan_temuan_ringan(Request $request)
     {
         $auditorId = Auth::id();
-        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->get();
+        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->first();
         $user = Auth::user();
         $tahun = Tahun::get();
         $selectedYear = $request->year;
@@ -155,7 +156,7 @@ class AuditController extends Controller
     public function laporan_temuan_berat(Request $request)
     {
         $auditorId = Auth::id();
-        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->get();
+        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->first();
         $user = Auth::user();
         $tahun = Tahun::get();
         $selectedYear = $request->year;
@@ -171,10 +172,11 @@ class AuditController extends Controller
         return view('pages.laporan-audit.laporan_berat', compact('data', 'tahun', 'user', 'auditorIdentity'));
     }
 
-    public function print(Request $request, $type) {
+    public function print(Request $request, $type)
+    {
         $user = Auth::user();
         $auditorId = Auth::id();
-        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->get();
+        $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->first();
         $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
             ->get();
 

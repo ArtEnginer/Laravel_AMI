@@ -31,27 +31,27 @@
                 <td>Ketua Auditor</td>
                 <td>:</td>
                 <td>
-                    @foreach ($auditorIdentity as $ui)
-                    {{ $ui->audit_plan->lead_auditor->name}}
-                    @endforeach
+
+                    {{ $auditorIdentity->audit_plan->lead_auditor->name}}
+
                 </td>
             </tr>
             <tr>
                 <td>Anggota Auditor</td>
                 <td>:</td>
                 <td>
-                    @foreach ($auditorIdentity as $ui)
-                    {{ $ui->audit_plan->auditor_1->name}}
-                    @endforeach
+
+                    {{ $auditorIdentity->audit_plan->auditor_1->name}}
+
                 </td>
             </tr>
             <tr>
                 <td>Tahun</td>
                 <td>:</td>
                 <td>
-                    @foreach ($auditorIdentity as $ui)
-                    {{ $ui->audit_plan->tahun}}
-                    @endforeach
+
+                    {{ $auditorIdentity->audit_plan->tahun}}
+
                 </td>
             </tr>
         </table>

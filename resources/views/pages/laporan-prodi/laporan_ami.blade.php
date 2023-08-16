@@ -22,27 +22,22 @@
             <tr>
                 <td>Prodi</td>
                 <td>:</td>
-                <td>&nbsp;Sistem Informasi</td>
+                <td>{{$identity->study_program->name}}</td>
             </tr>
             <tr>
                 <td>Fakultas</td>
                 <td>:</td>
-                <td>&nbsp;Sains dan Teknologi</td>
+                <td>{{$identity->faculty->name}}</td>
             </tr>
             <tr>
-                <td>Ketua Auditor</td>
+                <td>Kaprodi</td>
                 <td>:</td>
-                <td>&nbsp;M. Wildan Ihsani</td>
+                <td>{{$identity->study_program->kaprodi}}</td>
             </tr>
             <tr>
-                <td>Anggota Auditor</td>
+                <td>NIDN</td>
                 <td>:</td>
-                <td>&nbsp;Tsalatsah Maulidi Hasanah</td>
-            </tr>
-            <tr>
-                <td>Tahun</td>
-                <td>:</td>
-                <td>&nbsp;2023</td>
+                <td>{{$identity->study_program->nidn}}</td>
             </tr>
         </table>
         <br>
