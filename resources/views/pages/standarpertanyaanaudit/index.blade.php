@@ -145,7 +145,7 @@
                 }
             });
         });
-        $('body').on('click', '.btn-audit', function (e) {
+        $('#main-box').on('click', '.btn-audit', function (e) {
             $("#main-box").addClass("d-none");
             $("#next-box").removeClass("d-none");
             $("#next-box tbody").empty();

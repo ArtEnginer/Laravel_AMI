@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Audit;
 use App\Models\AuditPlan;
 use App\Models\Bukti;
+use App\Models\Rekomendasi;
 use App\Models\Standard;
 use App\Models\Tahun;
 use Illuminate\Http\Request;
@@ -21,6 +23,19 @@ class ProdiController extends Controller
                 $q = $request->query('year') == "none" ? $q : $q->where('tahun', '=', $request->query('year'));
                 return json_encode($q->get());
             }
+            if ($request->query('action') == "audit") {
+                $standards = Standard::with('pertanyaan')
+                    ->get()->toArray();
+                array_walk($standards, function (&$value, $key, $request) {
+                    $value['bukti'] = Bukti::where('audit_plan_id', '=', 1)->where('standard_id', '=', $value['id'])->first();
+                    $value['nilai'] = Audit::with('value')
+                        ->where('audit_plan_id', '=', $request->query('plan_id'))
+                        ->where('standard_id', '=', $value['id'])->first();
+                    $value['rekomendasi'] = Rekomendasi::where('audit_plan_id', '=', $request->query('plan_id'))
+                        ->where('standard_id', '=', $value['id'])->first();
+                }, $request);
+                return json_encode($standards);
+            }
             return json_encode([]);
         }
         $tahun = Tahun::get();
@@ -30,17 +45,19 @@ class ProdiController extends Controller
         return view('pages.standarpertanyaan.index', compact('data', 'user', 'tahun'));
     }
 
-    public function create_bukti($id)
+    public function create_bukti($id, $sid)
     {
         return view('pages.standarpertanyaan.create_bukti', compact('id'));
     }
 
-    public function store_bukti(Request $request, $id)
+    public function store_bukti(Request $request, $id, $sid)
     {
 
         // Simpan informasi file ke dalam model "Bukti"
         $bukti = new Bukti();
-        $bukti->standard_id = $id;
+        $bukti->audit_plan_id = $id;
+        $bukti->standard_id = $sid;
+        $bukti->user_id = Auth::id();
         $bukti->value = $request->bukti;
         // Tambahkan kolom lain yang sesuai
         $bukti->save();

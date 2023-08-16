@@ -74,8 +74,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['can:prodi'])->group(function () {
         Route::get('dashboard/ubah_status_audit/{id}', [DashboardController::class, 'ubah_status_audit'])->name('dashboard.ubah_status_audit');
         Route::get('standarpertanyaan', [ProdiController::class, 'index'])->name('standarpertanyaan.index');
-        Route::get('standarpertanyaan/add/bukti/{id}', [ProdiController::class, 'create_bukti'])->name('standarpertanyaan.bukti');
-        Route::post('standarpertanyaan/add/bukti/{id}', [ProdiController::class, 'store_bukti'])->name('standarpertanyaan.bukti.store');
+        Route::get('standarpertanyaan/add/bukti/{id}/{sid}', [ProdiController::class, 'create_bukti'])->name('standarpertanyaan.bukti');
+        Route::post('standarpertanyaan/add/bukti/{id}/{sid}', [ProdiController::class, 'store_bukti'])->name('standarpertanyaan.bukti.store');
         // Laporan
         Route::get('laporan-prodi/ami', [ProdiController::class, 'laporan_ami'])->name('laporan.prodi.ami');
         Route::get('laporan-prodi/ketercapaian', [ProdiController::class, 'laporan_ketercapaian'])->name('laporan.prodi.ketercapaian');

@@ -53,57 +53,57 @@
                 </div>
             </div>
             <br>
-        <div class="table-responsive">
-            <table class="table w-100" id="datatable">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Tahun</th>
-                        <th>Ketua Auditor</th>
-                        <th>Anggota Auditor</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($data as $key => $item)
-                    <tr>
-                        <td>{{ $key+1 }}</td>
-                        <td>{{ $item->tahun }}</td>
-                        <td>{{ $item->lead_auditor->name }}</td>
-                        <td>{{ $item->auditor_2->name }}</td>
-                        <td><button type="button" class="btn btn-success btn-sm">Audit</button></td>
-                        {{-- <td>{!! $item->value !!}</td>
-                        <td>
-                            @foreach($item->pertanyaan as $pertanyaan)
-                            {!! $pertanyaan->questionText !!}
-                            @endforeach
-                        </td>
-
-                        <td>
-                            @foreach($item->bukti as $key => $bukti)
-                            <a target="_blank" href="{{ $bukti->value }}"> Bukti {{ $key+1 }} </a> <br />
-                            @endforeach
-
-                            @if(count($item->bukti) == 0)
-                            <a href="{{ route('standarpertanyaan.bukti',$item->id) }}" class="btn btn-success btn-sm">Tambah Bukti</a>
-                            @endif
-
-                        </td>
-                        <td>
-                            @foreach($item->score as $nilai)
-                            {{ $nilai->score }}<br />
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach($item->rekomendasi as $rekomendasi)
-                            {{ $rekomendasi->value }}<br />
-                            @endforeach
-                        </td> --}}
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table w-100" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Tahun</th>
+                            <th>Ketua Auditor</th>
+                            <th>Anggota Auditor</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($data as $key => $item)
+                        <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td>{{ $item->tahun }}</td>
+                            <td>{{ $item->lead_auditor->name }}</td>
+                            <td>{{ $item->auditor_2->name }}</td>
+                            <td><button type="button" class="btn btn-success btn-sm btn-audit" data-planId="{{ $item->id }}">Audit</button></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <br>
+        <div id="next-box" class="d-none">
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-danger btn-sm" id="btn-back">Kembali</button>
+                </div>
+                <div class="col">
+                </div>
+            </div>
+            <br>
+            <div class="table-responsive">
+                <table class="table w-100" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Standar</th>
+                            <th>Pertanyaan</th>
+                            <th>Bukti</th>
+                            <th>Nilai</th>
+                            <th>Rekomendasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -111,6 +111,7 @@
 
 @push('scripts')
     <script>
+        const buktiUrl = "{{ route('standarpertanyaan.bukti', [99999, 55555]) }}";
         $('.selected-filters').on("change", function () {
             $.ajax({
                 type: "GET",
@@ -124,6 +125,51 @@
                     createPlans(response);
                 }
             });
+        });
+        $('#main-box').on('click', '.btn-audit', function (e) {
+            $("#main-box").addClass("d-none");
+            $("#next-box").removeClass("d-none");
+            $("#next-box tbody").empty();
+            const planId = e.currentTarget.getAttribute("data-planId");
+            $.ajax({
+                type: "GET",
+                url: "{!! url()->current() !!}",
+                dataType: 'JSON',
+                data: {
+                    action: "audit",
+                    plan_id: planId,
+                },
+                success: (response) => {
+                    response.forEach((item, index, arr) => {
+                        let q = "";
+                        item.pertanyaan.forEach(function(qs, qi){
+                            q += `<div>${qs.questionText}</div>`;
+                        });
+                        const b = item.bukti != null ? `<a href="${item.bukti?.value}">Bukti</a>` : `
+                        <a href="${buktiUrl.replace("99999",planId).replace("55555", item.id)}" class="btn btn-success btn-sm">Tambah Bukti</a>
+                        `;
+                        const n = item.nilai != null ? item.nilai?.value.score : `
+                            Belum
+                        `;
+                        const r = item.rekomendasi != null ? item.rekomendasi?.value : `
+                            Belum
+                        `;
+                        $("#next-box tbody").append(`<tr>
+                                <td>${index + 1}</td>
+                                <td>${item.value}</td>
+                                <td><div class="d-flex flex-column justify-content-center align-items-center">${q}</div></td>
+                                <td>${b}</td>
+                                <td>${n}</td>
+                                <td>${r}</td>
+                                `);
+                        })
+                    console.log(response);
+                }
+            });
+        });
+        $('#btn-back').on("click", function (e) {
+            $("#next-box").addClass("d-none");
+            $("#main-box").removeClass("d-none");
         });
 
         function createPlans(data = []) {
