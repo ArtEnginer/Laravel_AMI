@@ -3,79 +3,74 @@
 @section('title', 'Nilai')
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h4>Data Nilai</h4>
-            <div class="card-header-action">
-                <a href="{{ route('nilai.create') }}" class="btn btn-primary">
-                    <i class="fa fa-plus"></i>
-                    Tambah
-                </a>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped w-100" id="datatable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Standar</th>
-                            <th>Nilai</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+<div class="card">
+    <div class="card-header">
+        <h4>Data Nilai</h4>
+        <div class="card-header-action">
+            <a href="{{ route('nilai.create') }}" class="btn btn-primary">
+                <i class="fa fa-plus"></i>
+                Tambah
+            </a>
         </div>
     </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped w-100" id="datatable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Standar</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
-    <script>
-        $(function() {
-            var datatable = $('#datatable').DataTable({
-                processing: true,
-                serverSide: true,
-                ordering: true,
-                ajax: {
-                    url: "{!! url()->current() !!}"
+<script>
+    $(function() {
+        var datatable = $('#datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ordering: true,
+            ajax: {
+                url: "{!! url()->current() !!}"
+            },
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'ALL']
+            ],
+            responsive: true,
+            order: [
+                [0, 'desc'],
+            ],
+            columns: [{
+                    data: 'id',
+                    name: 'id'
                 },
-                lengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, 'ALL']
-                ],
-                responsive: true,
-                order: [
-                    [0, 'desc'],
-                ],
-                columns: [{
-                        data: 'id',
-                        name: 'id'
-                    },
-                    {
-                        data: 'standard.name',
-                        name: 'standard.name'
-                    },
-                    {
-                        data: 'score',
-                        name: 'score'
-                    },
-                    {
-                        data: 'id',
-                        name: 'id'
-                    },
-                ],
-                columnDefs: [{
-                    "targets": [0, 1],
-                    "render": function(data, type, row, meta) {
-                        const e = document.createElement('div');
-                        e.innerHTML = data;
-                        return e.innerText
-                    }
-                }, {
-                    "targets": -1,
-                    "render": function(data, type, row, meta) {
-                        return `
+                {
+                    data: 'standard.name',
+                    name: 'standard.name'
+                },
+                {
+                    data: 'id',
+                    name: 'id'
+                },
+            ],
+            columnDefs: [{
+                "targets": [0, 1],
+                "render": function(data, type, row, meta) {
+                    const e = document.createElement('div');
+                    e.innerHTML = data;
+                    return e.innerText
+                }
+            }, {
+                "targets": -1,
+                "render": function(data, type, row, meta) {
+                    return `
                         <div style="min-width: 4rem;">
                         <form action="{{ url('/nilai') }}/${row.id}" method="POST">
                             @method('DELETE')
@@ -95,19 +90,19 @@
                         </form>
                         </div>
                     `;
-                    }
-                }],
-                rowId: function(a) {
-                    return a;
-                },
-                rowCallback: function(row, data, iDisplayIndex) {
-                    var info = this.fnPagingInfo();
-                    var page = info.iPage;
-                    var length = info.iLength;
-                    var index = page * length + (iDisplayIndex + 1);
-                    $('td:eq(0)', row).html(index);
-                },
-            });
+                }
+            }],
+            rowId: function(a) {
+                return a;
+            },
+            rowCallback: function(row, data, iDisplayIndex) {
+                var info = this.fnPagingInfo();
+                var page = info.iPage;
+                var length = info.iLength;
+                var index = page * length + (iDisplayIndex + 1);
+                $('td:eq(0)', row).html(index);
+            },
         });
-    </script>
+    });
+</script>
 @endpush()

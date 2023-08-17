@@ -40,7 +40,7 @@ class ValueController extends Controller
     {
         $data = $request->validate([
             'standard_id' => 'required|exists:standards,id',
-            'score' => 'required',
+            // 'score' => 'required',
         ]);
 
         Value::create($data);
@@ -79,7 +79,7 @@ class ValueController extends Controller
 
         $data = $request->validate([
             'standard_id' => 'required|exists:standards,id',
-            'score' => 'required',
+            // 'score' => 'required',
         ]);
 
         $item->update($data);
