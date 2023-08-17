@@ -76,7 +76,7 @@ class ProdiController extends Controller
             $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
                 ->get();
         };
-        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
+        $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
 
         return view('pages.laporan-prodi.laporan_ami', compact('data', 'tahun', 'identity'));
     }
@@ -93,7 +93,7 @@ class ProdiController extends Controller
             $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
                 ->get();
         };
-        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
+        $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
 
         return view('pages.laporan-prodi.laporan_ketercapaian', compact('data', 'tahun', 'identity'));
     }
@@ -110,8 +110,7 @@ class ProdiController extends Controller
             $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
                 ->get();
         };
-        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
-
+        $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
         return view('pages.laporan-prodi.laporan_ringan', compact('data', 'tahun', 'identity'));
     }
 
@@ -127,7 +126,7 @@ class ProdiController extends Controller
             $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
                 ->get();
         };
-        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
+        $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
         return view('pages.laporan-prodi.laporan_berat', compact('data', 'tahun', 'identity'));
     }
 
@@ -135,8 +134,7 @@ class ProdiController extends Controller
     {
         $data = Standard::with('pertanyaan', 'bukti', 'score', 'rekomendasi')
             ->get();
-        $identity = AuditPlan::with('study_program', 'faculty')->where('study_program_id', Auth::user()->id)->first();
-
+        $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
         return view('pages.laporan-prodi.print', compact('data', 'type', 'identity'));
     }
 }

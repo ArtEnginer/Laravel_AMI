@@ -39,6 +39,16 @@
                 <td>:</td>
                 <td>{{$identity->study_program->nidn}}</td>
             </tr>
+            <tr>
+                <td>Ketua Auditor</td>
+                <td>:</td>
+                <td>{{$identity->lead_auditor->name}}</td>
+            </tr>
+            <tr>
+                <td>Anggota Auditor</td>
+                <td>:</td>
+                <td>{{$identity->auditor_1->name}}</td>
+            </tr>
         </table>
 
         <br>
