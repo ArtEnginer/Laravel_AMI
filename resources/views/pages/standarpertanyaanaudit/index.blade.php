@@ -51,7 +51,7 @@
                         <select class="form-control selected-filters" style="display: inline !important;" name="selected_faculty" id="selected_faculty">
                             <option value="none" selected>Semua Fakultas</option>
                             @foreach ($facultys as $item)
-                            <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -59,7 +59,7 @@
                         <select class="form-control selected-filters" style="display: inline !important;" name="selected_year" id="selected_year">
                             <option value="none" selected>Semua Tahun</option>
                             @foreach ($tahun as $item)
-                            <option value="{{ $item->value }}" >{{ $item->value }}</option>
+                            <option value="{{ $item->value }}">{{ $item->value }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -127,55 +127,55 @@
 @endsection
 
 @push('scripts')
-    <script>
-        $("li.active a span").text("Dashboard");
-        const nilauUrl = "{{ route('standarpertanyaan.nilai', [99999, 55555]) }}";
-        const rekomUrl = "{{ route('standarpertanyaan.rekomendasi', [99999, 55555]) }}";
-        $('.selected-filters').on("change", function () {
-            $.ajax({
-                type: "GET",
-                url: "{!! url()->current() !!}",
-                dataType: 'JSON',
-                data: {
-                    action: "plans",
-                    faculty: $("#selected_faculty").val(),
-                    year: $("#selected_year").val()
-                },
-                success: function (response) {
-                    createPlans(response);
-                }
-            });
+<script>
+    $("li.active a span").text("Dashboard");
+    const nilauUrl = "{{ route('standarpertanyaan.nilai', [99999, 55555]) }}";
+    const rekomUrl = "{{ route('standarpertanyaan.rekomendasi', [99999, 55555]) }}";
+    $('.selected-filters').on("change", function() {
+        $.ajax({
+            type: "GET",
+            url: "{!! url()->current() !!}",
+            dataType: 'JSON',
+            data: {
+                action: "plans",
+                faculty: $("#selected_faculty").val(),
+                year: $("#selected_year").val()
+            },
+            success: function(response) {
+                createPlans(response);
+            }
         });
-        $('#main-box').on('click', '.btn-audit', function (e) {
+    });
+    $('#main-box').on('click', '.btn-audit', function(e) {
         $("li.active a span").text("AMI");
-            $(".section-header h1").text("AMI");
-            $("#idn").addClass("d-none");
-            $("#main-box").addClass("d-none");
-            $("#next-box").removeClass("d-none");
-            $("#next-box tbody").empty();
-            const planId = e.currentTarget.getAttribute("data-planId");
-            $.ajax({
-                type: "GET",
-                url: "{!! url()->current() !!}",
-                dataType: 'JSON',
-                data: {
-                    action: "audit",
-                    plan_id: planId,
-                },
-                success: (response) => {
-                    response.forEach((item, index, arr) => {
-                        let q = "";
-                        item.pertanyaan.forEach(function(qs, qi){
-                            q += `<div>${qs.questionText}</div>`;
-                        });
-                        const b = item.bukti != null ? `<a href="${item.bukti?.value}">Bukti</a>` : "Belum";
-                        const n = item.nilai != null ? item.nilai?.value : `
+        $(".section-header h1").text("AMI");
+        $("#idn").addClass("d-none");
+        $("#main-box").addClass("d-none");
+        $("#next-box").removeClass("d-none");
+        $("#next-box tbody").empty();
+        const planId = e.currentTarget.getAttribute("data-planId");
+        $.ajax({
+            type: "GET",
+            url: "{!! url()->current() !!}",
+            dataType: 'JSON',
+            data: {
+                action: "audit",
+                plan_id: planId,
+            },
+            success: (response) => {
+                response.forEach((item, index, arr) => {
+                    let q = "";
+                    item.pertanyaan.forEach(function(qs, qi) {
+                        q += `<div>${qs.questionText}</div>`;
+                    });
+                    const b = item.bukti != null ? `<a href="${item.bukti?.value}">Bukti</a>` : "Belum";
+                    const n = item.nilai != null ? item.nilai?.value : `
                             <a href="${nilauUrl.replace("99999",planId).replace("55555", item.id)}" class="btn btn-success btn-sm">Tambah Nilai</a>
                         `;
-                        const r = item.rekomendasi != null ? item.rekomendasi?.value : `
+                    const r = item.rekomendasi != null ? item.rekomendasi?.value : `
                             <a href="${rekomUrl.replace("99999",planId).replace("55555", item.id)}" class="btn btn-success btn-sm">Tambah Rekomendasi</a>
                         `;
-                        $("#next-box tbody").append(`<tr>
+                    $("#next-box tbody").append(`<tr>
                                 <td>${index + 1}</td>
                                 <td>${item.value}</td>
                                 <td><div class="d-flex flex-column justify-content-center align-items-center">${q}</div></td>
@@ -183,22 +183,22 @@
                                 <td>${n}</td>
                                 <td>${r}</td>
                                 `);
-            })
-                }
-            });
+                })
+            }
         });
-        $('#btn-back').on("click", function (e) {
+    });
+    $('#btn-back').on("click", function(e) {
         $("li.active a span").text("Dashboard");
-            $(".section-header h1").text("Dashboard");
-            $("#idn").removeClass("d-none");
-            $("#next-box").addClass("d-none");
-            $("#main-box").removeClass("d-none");
-        });
+        $(".section-header h1").text("Dashboard");
+        $("#idn").removeClass("d-none");
+        $("#next-box").addClass("d-none");
+        $("#main-box").removeClass("d-none");
+    });
 
-        function createPlans(data = []) {
-            $("#main-box tbody").empty();
-            data.forEach(function(item, index, arr){
-                $("#main-box tbody").append(`<tr>
+    function createPlans(data = []) {
+        $("#main-box tbody").empty();
+        data.forEach(function(item, index, arr) {
+            $("#main-box tbody").append(`<tr>
                                 <td>${index + 1}</td>
                                 <td>${item.tahun}</td>
                                 <td>${item.study_program.name}</td>
@@ -207,7 +207,7 @@
                                 <td>${item.auditor_2.name}</td>
                                 <td><button type="button" class="btn btn-success btn-sm btn-audit" data-planId="${item.id}">Audit</button></td>
                             </tr>`);
-            })
-        }
-    </script>
+        })
+    }
+</script>
 @endpush()

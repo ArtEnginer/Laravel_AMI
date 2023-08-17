@@ -94,7 +94,7 @@
         <li class="{{ Route::is('standarpertanyaan.audit') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('standarpertanyaan.audit') }}">
                 <i class="fas fa-user"></i>
-                <span>Standar & Pertanyaan</span>
+                <span>Dashboard</span>
             </a>
         </li>
         <li class="{{ Route::is('profile') ? 'active' : '' }}">
@@ -128,8 +128,8 @@
         @can('prodi')
         <li class="{{ Route::is('standarpertanyaan.index') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('standarpertanyaan.index') }}">
-                <i class="fas fa-user"></i>
-                <span>Standar & Pertanyaan</span>
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
             </a>
         </li>
         <li class="{{ Route::is('profile') ? 'active' : '' }}">
