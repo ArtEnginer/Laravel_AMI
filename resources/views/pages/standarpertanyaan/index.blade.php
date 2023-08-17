@@ -18,7 +18,7 @@
         </div>
         @endif
 
-        <table>
+        <table id="idn">
             <tr>
                 <td>Prodi</td>
                 <td>:</td>
@@ -111,6 +111,7 @@
 
 @push('scripts')
     <script>
+        $("li.active a span").text("Dashboard");
         const buktiUrl = "{{ route('standarpertanyaan.bukti', [99999, 55555]) }}";
         $('.selected-filters').on("change", function () {
             $.ajax({
@@ -127,6 +128,9 @@
             });
         });
         $('#main-box').on('click', '.btn-audit', function (e) {
+            $(".section-header h1").text("AMI");
+            $("li.active a span").text("AMI");
+            $("#idn").addClass("d-none");
             $("#main-box").addClass("d-none");
             $("#next-box").removeClass("d-none");
             $("#next-box tbody").empty();
@@ -168,6 +172,9 @@
             });
         });
         $('#btn-back').on("click", function (e) {
+            $(".section-header h1").text("Dashboard");
+            $("li.active a span").text("Dashboard");
+            $("#idn").removeClass("d-none");
             $("#next-box").addClass("d-none");
             $("#main-box").removeClass("d-none");
         });

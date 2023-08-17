@@ -18,7 +18,7 @@
         </div>
         @endif
 
-        <table>
+        <table id="idn">
             <tr>
                 <td>Nama</td>
                 <td>:</td>
@@ -128,6 +128,7 @@
 
 @push('scripts')
     <script>
+        $("li.active a span").text("Dashboard");
         const nilauUrl = "{{ route('standarpertanyaan.nilai', [99999, 55555]) }}";
         const rekomUrl = "{{ route('standarpertanyaan.rekomendasi', [99999, 55555]) }}";
         $('.selected-filters').on("change", function () {
@@ -146,6 +147,9 @@
             });
         });
         $('#main-box').on('click', '.btn-audit', function (e) {
+        $("li.active a span").text("AMI");
+            $(".section-header h1").text("AMI");
+            $("#idn").addClass("d-none");
             $("#main-box").addClass("d-none");
             $("#next-box").removeClass("d-none");
             $("#next-box tbody").empty();
@@ -184,6 +188,9 @@
             });
         });
         $('#btn-back').on("click", function (e) {
+        $("li.active a span").text("Dashboard");
+            $(".section-header h1").text("Dashboard");
+            $("#idn").removeClass("d-none");
             $("#next-box").addClass("d-none");
             $("#main-box").removeClass("d-none");
         });
