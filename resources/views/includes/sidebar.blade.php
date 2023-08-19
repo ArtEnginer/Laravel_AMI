@@ -93,7 +93,7 @@
         </li> -->
         <li class="{{ Route::is('standarpertanyaan.audit') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('standarpertanyaan.audit') }}">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
         </li>
