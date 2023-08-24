@@ -52,7 +52,9 @@ class AuditController extends Controller
 
         $countRekomendasi = Rekomendasi::where('user_id', auth()->user()->id)->count();
 
-        return view('pages.standarpertanyaanaudit.index', compact('data', 'facultys', 'tahun', 'user', 'plans', 'countRekomendasi'));
+        $nilaiCreated = $request->session()->get('storedValue');
+        $request->session()->remove('storedValue');
+        return view('pages.standarpertanyaanaudit.index', compact('data', 'facultys', 'tahun', 'user', 'plans', 'countRekomendasi', 'nilaiCreated'));
     }
 
     public function create_nilai($id, $sid)
@@ -72,6 +74,7 @@ class AuditController extends Controller
         $value->auditor_id = auth()->user()->id;
         // Tambahkan kolom lain yang sesuai
         $value->save();
+        $request->session()->put('storedValue', ['id' => $id, 'sid' => $sid]);
 
         return redirect()->route('standarpertanyaan.audit')->with('message', 'Nilai berhasil ditambahkan.');
     }
@@ -92,6 +95,7 @@ class AuditController extends Controller
         $value->value = $request->value;
         // Tambahkan kolom lain yang sesuai
         $value->save();
+        $request->session()->put('storedValue', ['id' => $id, 'sid' => $sid]);
 
         return redirect()->route('standarpertanyaan.audit')->with('message', 'Rekomendasi berhasil ditambahkan.');
     }
@@ -165,8 +169,7 @@ class AuditController extends Controller
         return view('pages.laporan-audit.laporan_berat', compact('data', 'tahun', 'user', 'auditorIdentity'));
     }
 
-    public function print(Request $request, $type)
-    {
+    public function print(Request $request, $type) {
         $user = Auth::user();
         $auditorId = Auth::id();
         $auditorIdentity = Audit::with('auditor', 'audit_plan', 'audit_plan.faculty', 'audit_plan.study_program', 'audit_plan.lead_auditor', 'audit_plan.auditor_1', 'audit_plan.auditor_2')->where('auditor_id', $auditorId)->first();

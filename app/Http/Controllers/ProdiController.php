@@ -41,7 +41,9 @@ class ProdiController extends Controller
         $data = AuditPlan::with('faculty', 'study_program', 'lead_auditor', 'auditor_1', 'auditor_2')
             ->where('study_program_id', '=', $user->id)
             ->get();
-        return view('pages.standarpertanyaan.index', compact('data', 'user', 'tahun'));
+        $nilaiCreated = $request->session()->get('storedValue');
+        $request->session()->remove('storedValue');
+        return view('pages.standarpertanyaan.index', compact('data', 'user', 'tahun', 'nilaiCreated'));
     }
 
     public function create_bukti($id, $sid)
@@ -60,6 +62,7 @@ class ProdiController extends Controller
         $bukti->value = $request->bukti;
         // Tambahkan kolom lain yang sesuai
         $bukti->save();
+        $request->session()->put('storedValue', ['id' => $id, 'sid' => $sid]);
 
         return redirect()->route('standarpertanyaan.index')->with('message', 'Bukti berhasil ditambahkan.');
     }
@@ -118,8 +121,7 @@ class ProdiController extends Controller
         return view('pages.laporan-prodi.laporan_berat', compact('data', 'tahun', 'identity'));
     }
 
-    public function print(Request $request, $type)
-    {
+    public function print(Request $request, $type) {
         $tahun = Tahun::get();
 
         $selectedYear = $request->year;

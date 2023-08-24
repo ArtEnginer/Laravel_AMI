@@ -131,6 +131,10 @@
     $("li.active a span").text("Dashboard");
     const nilauUrl = "{{ route('standarpertanyaan.nilai', [99999, 55555]) }}";
     const rekomUrl = "{{ route('standarpertanyaan.rekomendasi', [99999, 55555]) }}";
+    let custPlanId = `{{ $nilaiCreated['id'] ?? '' }}`
+    if (custPlanId != '') {
+        auditing();
+    }
     $('.selected-filters').on("change", function() {
         $.ajax({
             type: "GET",
@@ -146,14 +150,38 @@
             }
         });
     });
-    $('#main-box').on('click', '.btn-audit', function(e) {
+    $('#main-box').on('click', '.btn-audit', auditing);
+    $('#btn-back').on("click", function(e) {
+        $("li.active a span").text("Dashboard");
+        $(".section-header h1").text("Dashboard");
+        $("#idn").removeClass("d-none");
+        $("#next-box").addClass("d-none");
+        $("#main-box").removeClass("d-none");
+    });
+
+    function createPlans(data = []) {
+        $("#main-box tbody").empty();
+        data.forEach(function(item, index, arr) {
+            $("#main-box tbody").append(`<tr>
+                                <td>${index + 1}</td>
+                                <td>${item.tahun}</td>
+                                <td>${item.study_program.name}</td>
+                                <td>${item.faculty.name}</td>
+                                <td>${item.lead_auditor.name}</td>
+                                <td>${item.auditor_2.name}</td>
+                                <td><button type="button" class="btn btn-success btn-sm btn-audit" data-planId="${item.id}">Audit</button></td>
+                            </tr>`);
+        })
+    }
+
+    function auditing(e) {
         $("li.active a span").text("AMI");
         $(".section-header h1").text("AMI");
         $("#idn").addClass("d-none");
         $("#main-box").addClass("d-none");
         $("#next-box").removeClass("d-none");
         $("#next-box tbody").empty();
-        const planId = e.currentTarget.getAttribute("data-planId");
+        const planId = e?.currentTarget.getAttribute("data-planId") ?? custPlanId;
         $.ajax({
             type: "GET",
             url: "{!! url()->current() !!}",
@@ -186,28 +214,6 @@
                 })
             }
         });
-    });
-    $('#btn-back').on("click", function(e) {
-        $("li.active a span").text("Dashboard");
-        $(".section-header h1").text("Dashboard");
-        $("#idn").removeClass("d-none");
-        $("#next-box").addClass("d-none");
-        $("#main-box").removeClass("d-none");
-    });
-
-    function createPlans(data = []) {
-        $("#main-box tbody").empty();
-        data.forEach(function(item, index, arr) {
-            $("#main-box tbody").append(`<tr>
-                                <td>${index + 1}</td>
-                                <td>${item.tahun}</td>
-                                <td>${item.study_program.name}</td>
-                                <td>${item.faculty.name}</td>
-                                <td>${item.lead_auditor.name}</td>
-                                <td>${item.auditor_2.name}</td>
-                                <td><button type="button" class="btn btn-success btn-sm btn-audit" data-planId="${item.id}">Audit</button></td>
-                            </tr>`);
-        })
     }
 </script>
 @endpush()

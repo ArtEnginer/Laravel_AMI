@@ -111,6 +111,10 @@
 
 @push('scripts')
     <script>
+        let custPlanId = `{{ $nilaiCreated['id'] ?? '' }}`
+        if (custPlanId != '') {
+            auditing();
+        }
         $("li.active a span").text("Dashboard");
         const buktiUrl = "{{ route('standarpertanyaan.bukti', [99999, 55555]) }}";
         $('.selected-filters').on("change", function () {
@@ -127,14 +131,36 @@
                 }
             });
         });
-        $('#main-box').on('click', '.btn-audit', function (e) {
+        $('#main-box').on('click', '.btn-audit', auditing);
+        $('#btn-back').on("click", function (e) {
+            $(".section-header h1").text("Dashboard");
+            $("li.active a span").text("Dashboard");
+            $("#idn").removeClass("d-none");
+            $("#next-box").addClass("d-none");
+            $("#main-box").removeClass("d-none");
+        });
+
+        function createPlans(data = []) {
+            $("#main-box tbody").empty();
+            data.forEach(function(item, index, arr){
+                $("#main-box tbody").append(`<tr>
+                                <td>${index + 1}</td>
+                                <td>${item.tahun}</td>
+                                <td>${item.lead_auditor.name}</td>
+                                <td>${item.auditor_2.name}</td>
+                                <td><button type="button" class="btn btn-success btn-sm btn-audit" data-planId="${item.id}">Audit</button></td>
+                            </tr>`);
+            })
+        }
+
+        function auditing(e) {
             $(".section-header h1").text("AMI");
             $("li.active a span").text("AMI");
             $("#idn").addClass("d-none");
             $("#main-box").addClass("d-none");
             $("#next-box").removeClass("d-none");
             $("#next-box tbody").empty();
-            const planId = e.currentTarget.getAttribute("data-planId");
+            const planId = e?.currentTarget.getAttribute("data-planId") ?? custPlanId;
             $.ajax({
                 type: "GET",
                 url: "{!! url()->current() !!}",
@@ -170,26 +196,6 @@
                     console.log(response);
                 }
             });
-        });
-        $('#btn-back').on("click", function (e) {
-            $(".section-header h1").text("Dashboard");
-            $("li.active a span").text("Dashboard");
-            $("#idn").removeClass("d-none");
-            $("#next-box").addClass("d-none");
-            $("#main-box").removeClass("d-none");
-        });
-
-        function createPlans(data = []) {
-            $("#main-box tbody").empty();
-            data.forEach(function(item, index, arr){
-                $("#main-box tbody").append(`<tr>
-                                <td>${index + 1}</td>
-                                <td>${item.tahun}</td>
-                                <td>${item.lead_auditor.name}</td>
-                                <td>${item.auditor_2.name}</td>
-                                <td><button type="button" class="btn btn-success btn-sm btn-audit" data-planId="${item.id}">Audit</button></td>
-                            </tr>`);
-            })
         }
     </script>
 @endpush()
