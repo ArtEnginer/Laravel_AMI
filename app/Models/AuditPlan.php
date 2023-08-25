@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class AuditPlan extends Model
 {
@@ -69,8 +68,8 @@ class AuditPlan extends Model
         return $this->hasMany(Rekomendasi::class);
     }
 
-    public function bukti(): HasOne
+    public function bukti(): HasMany
     {
-        return $this->hasOne(Bukti::class);
+        return $this->hasMany(Bukti::class);
     }
 }

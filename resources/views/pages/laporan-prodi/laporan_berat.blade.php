@@ -95,11 +95,11 @@
                             @endforeach
                         </td>
                         <td>
-                            @if ($item->bukti && $item->bukti->standard_id == $s->id)
-                            <a target="_blank" href="{{ $item->bukti?->value }}"> Bukti {{ $key+1 }} </a> <br />
-                            @else
-                            Belum
+                            @foreach ($item->bukti as $bukti)
+                            @if ($bukti->standard_id == $s->id)
+                            <a target="_blank" href="{{ $bukti->value }}"> Bukti {{ $key+1 }} </a> <br />
                             @endif
+                            @endforeach
                         </td>
                         <td>
                             @foreach ($item->audits as $nilai)

@@ -87,14 +87,13 @@ class ProdiController extends Controller
         $tahun = Tahun::get();
         $standar = Standard::with('pertanyaan')->get();
         $selectedYear = $request->year;
+        $filterAudit = function ($query) {
+            $query->where('value', '=', 4);
+        };
         if ($selectedYear != null) {
-            $data = AuditPlan::whereHas('audits', function (Builder $query) {
-                $query->where('value', '=', '4');
-            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
+            $data = AuditPlan::with(['audits' => $filterAudit, 'rekomendasi', 'bukti'])->whereHas('audits', $filterAudit)->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
         } else {
-            $data = AuditPlan::whereHas('audits', function (Builder $query) {
-                $query->where('value', '=', '4');
-            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
+            $data = AuditPlan::with(['audits' => $filterAudit, 'rekomendasi', 'bukti'])->whereHas('audits', $filterAudit)->where('study_program_id', '=', Auth::id())->get();
         }
         $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
 
@@ -106,14 +105,13 @@ class ProdiController extends Controller
         $tahun = Tahun::get();
         $standar = Standard::with('pertanyaan')->get();
         $selectedYear = $request->year;
+        $filterAudit = function ($query) {
+            $query->where('value', '=', 2)->orWhere('value', '=', 3);
+        };
         if ($selectedYear != null) {
-            $data = AuditPlan::whereHas('audits', function (Builder $query) {
-                $query->where('value', '=', '2')->orWhere('value', '=', '3');
-            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
+            $data = AuditPlan::whereHas('audits', $filterAudit)->with(['audits' => $filterAudit, 'rekomendasi', 'bukti'])->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
         } else {
-            $data = AuditPlan::whereHas('audits', function (Builder $query) {
-                $query->where('value', '=', '2')->orWhere('value', '=', '3');
-            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
+            $data = AuditPlan::whereHas('audits', $filterAudit)->with(['audits' => $filterAudit, 'rekomendasi', 'bukti'])->where('study_program_id', '=', Auth::id())->get();
         }
         $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
         return view('pages.laporan-prodi.laporan_ringan', compact('data', 'tahun', 'identity', 'standar'));
@@ -124,14 +122,13 @@ class ProdiController extends Controller
         $tahun = Tahun::get();
         $standar = Standard::with('pertanyaan')->get();
         $selectedYear = $request->year;
+        $filterAudit = function ($query) {
+            $query->where('value', '=', 0)->orWhere('value', '=', 1);
+        };
         if ($selectedYear != null) {
-            $data = AuditPlan::whereHas('audits', function (Builder $query) {
-                $query->where('value', '=', '0')->orWhere('value', '=', '1');
-            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
+            $data = AuditPlan::whereHas('audits', $filterAudit)->with(['audits' => $filterAudit,'rekomendasi', 'bukti'])->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
         } else {
-            $data = AuditPlan::whereHas('audits', function (Builder $query) {
-                $query->where('value', '=', '0')->orWhere('value', '=', '1');
-            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
+            $data = AuditPlan::whereHas('audits', $filterAudit)->with(['audits' => $filterAudit,'rekomendasi', 'bukti'])->where('study_program_id', '=', Auth::id())->get();
         }
         $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
         return view('pages.laporan-prodi.laporan_berat', compact('data', 'tahun', 'identity', 'standar'));
