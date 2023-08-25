@@ -22,11 +22,11 @@ class AuditPlan extends Model
         'tanggal_rtm',
         'kesimpulan',
         'foto_kegiatan',
-        'tahun'
+        'tahun',
     ];
 
     protected $appends = [
-        'foto'
+        'foto',
     ];
 
     public function getFotoAttribute()
@@ -64,11 +64,10 @@ class AuditPlan extends Model
         return $this->hasMany(Audit::class);
     }
 
-    public function rekomendasi(): HasOne
+    public function rekomendasi(): HasMany
     {
-        return $this->hasOne(Rekomendasi::class);
+        return $this->hasMany(Rekomendasi::class);
     }
-
 
     public function bukti(): HasOne
     {

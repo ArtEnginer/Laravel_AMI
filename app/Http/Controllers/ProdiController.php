@@ -8,6 +8,7 @@ use App\Models\Bukti;
 use App\Models\Rekomendasi;
 use App\Models\Standard;
 use App\Models\Tahun;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -70,55 +71,70 @@ class ProdiController extends Controller
     public function laporan_ami(Request $request)
     {
         $tahun = Tahun::get();
+        $standar = Standard::with('pertanyaan')->get();
         $selectedYear = $request->year;
         if ($selectedYear != null) {
-            $data = AuditPlan::with('audits', 'audits.standard', 'audits.standard.pertanyaan', 'rekomendasi', 'bukti')->where([['tahun', '=', $selectedYear], ['lead_auditor_id', '=', Auth::id()]])->orWhere('auditor_2_id', '=', Auth::id())->get();
+            $data = AuditPlan::with('audits', 'rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
         } else {
-            $data = AuditPlan::with('audits', 'audits.standard', 'audits.standard.pertanyaan', 'rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
+            $data = AuditPlan::with('audits', 'rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
         }
         $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
-
-        return view('pages.laporan-prodi.laporan_ami', compact('data', 'tahun', 'identity'));
+        return view('pages.laporan-prodi.laporan_ami', compact('data', 'tahun', 'identity', 'standar'));
     }
 
     public function laporan_ketercapaian(Request $request)
     {
         $tahun = Tahun::get();
+        $standar = Standard::with('pertanyaan')->get();
         $selectedYear = $request->year;
         if ($selectedYear != null) {
-            $data = AuditPlan::with('audits', 'audits.standard', 'audits.standard.pertanyaan', 'rekomendasi', 'bukti')->where([['tahun', '=', $selectedYear], ['lead_auditor_id', '=', Auth::id()]])->orWhere('auditor_2_id', '=', Auth::id())->get();
+            $data = AuditPlan::whereHas('audits', function (Builder $query) {
+                $query->where('value', '=', '4');
+            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
         } else {
-            $data = AuditPlan::with('audits', 'audits.standard', 'audits.standard.pertanyaan', 'rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
+            $data = AuditPlan::whereHas('audits', function (Builder $query) {
+                $query->where('value', '=', '4');
+            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
         }
         $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
 
-        return view('pages.laporan-prodi.laporan_ketercapaian', compact('data', 'tahun', 'identity'));
+        return view('pages.laporan-prodi.laporan_ketercapaian', compact('data', 'tahun', 'identity', 'standar'));
     }
 
     public function laporan_temuan_ringan(Request $request)
     {
         $tahun = Tahun::get();
+        $standar = Standard::with('pertanyaan')->get();
         $selectedYear = $request->year;
         if ($selectedYear != null) {
-            $data = AuditPlan::with('audits', 'audits.standard', 'audits.standard.pertanyaan', 'rekomendasi', 'bukti')->where([['tahun', '=', $selectedYear], ['lead_auditor_id', '=', Auth::id()]])->orWhere('auditor_2_id', '=', Auth::id())->get();
+            $data = AuditPlan::whereHas('audits', function (Builder $query) {
+                $query->where('value', '=', '2')->orWhere('value', '=', '3');
+            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
         } else {
-            $data = AuditPlan::with('audits', 'audits.standard', 'audits.standard.pertanyaan', 'rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
+            $data = AuditPlan::whereHas('audits', function (Builder $query) {
+                $query->where('value', '=', '2')->orWhere('value', '=', '3');
+            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
         }
         $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
-        return view('pages.laporan-prodi.laporan_ringan', compact('data', 'tahun', 'identity'));
+        return view('pages.laporan-prodi.laporan_ringan', compact('data', 'tahun', 'identity', 'standar'));
     }
 
     public function laporan_temuan_berat(Request $request)
     {
         $tahun = Tahun::get();
+        $standar = Standard::with('pertanyaan')->get();
         $selectedYear = $request->year;
         if ($selectedYear != null) {
-            $data = AuditPlan::with('audits', 'audits.standard', 'audits.standard.pertanyaan', 'rekomendasi', 'bukti')->where([['tahun', '=', $selectedYear], ['lead_auditor_id', '=', Auth::id()]])->orWhere('auditor_2_id', '=', Auth::id())->get();
+            $data = AuditPlan::whereHas('audits', function (Builder $query) {
+                $query->where('value', '=', '0')->orWhere('value', '=', '1');
+            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->where('tahun', '=', $selectedYear)->get();
         } else {
-            $data = AuditPlan::with('audits', 'audits.standard', 'audits.standard.pertanyaan', 'rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
+            $data = AuditPlan::whereHas('audits', function (Builder $query) {
+                $query->where('value', '=', '0')->orWhere('value', '=', '1');
+            })->with('rekomendasi', 'bukti')->where('study_program_id', '=', Auth::id())->get();
         }
         $identity = AuditPlan::with('study_program', 'faculty', 'lead_auditor', 'auditor_1')->where('study_program_id', Auth::user()->id)->first();
-        return view('pages.laporan-prodi.laporan_berat', compact('data', 'tahun', 'identity'));
+        return view('pages.laporan-prodi.laporan_berat', compact('data', 'tahun', 'identity', 'standar'));
     }
 
     public function print(Request $request, $type) {

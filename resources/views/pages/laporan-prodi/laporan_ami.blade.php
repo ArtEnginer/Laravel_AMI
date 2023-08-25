@@ -80,38 +80,41 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php($idx = 1)
                     @foreach($data as $key => $item)
+                    @foreach($standar as $s)
                     <tr>
-                        <td>{{ $key+1 }}</td>
+                        <td>{{ $idx++ }}</td>
                         <td>
-                            @foreach ($item->audits as $audit)
-                            {{ $audit->standard->name }}
-                            @endforeach
+                            {{ $s->name }}
                         <td>
-                            @foreach ($item->audits as $audit)
-                            @foreach ($audit->standard->pertanyaan as $pertanyaan)
+                            @foreach ($s->pertanyaan as $pertanyaan)
                             {!! $pertanyaan->questionText !!}
-                            @endforeach
                             @endforeach
                         </td>
                         <td>
-                            @foreach($item->bukti ?? [] as $key => $bukti)
-
-                            <a target="_blank" href="{{ $bukti->value }}"> Bukti {{ $key+1 }} </a> <br />
-                            @endforeach
+                            @if ($item->bukti && $item->bukti->standard_id == $s->id)
+                            <a target="_blank" href="{{ $item->bukti?->value }}"> Bukti {{ $key+1 }} </a> <br />
+                            @else
+                            Belum
+                            @endif
                         </td>
                         <td>
                             @foreach ($item->audits as $nilai)
+                            @if ($nilai->standard_id == $s->id)
                             {{ $nilai->value }}
+                            @endif
                             @endforeach
-
                         </td>
                         <td>
-                            @foreach($item->standard->rekomendasi?? [] as $rekomendasi)
-                            {!! $rekomendasi->value !!}<br />
+                            @foreach ($item->rekomendasi as $rekom)
+                            @if ($rekom->standard_id == $s->id)
+                            {!! $rekom->value !!}<br />
+                            @endif
                             @endforeach
                         </td>
                     </tr>
+                    @endforeach
                     @endforeach
                 </tbody>
             </table>
